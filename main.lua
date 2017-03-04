@@ -22,6 +22,9 @@ local player2 = {
 
 local spr_apple = nil
 
+local frames = {}
+local fruit_spriteSheet
+
 local fruitTimerMax = .25
 local fruitTimer = fruitTimerMax
 local fruits = {}
@@ -29,6 +32,8 @@ local fruits = {}
 function love.load()
   player1.img = love.graphics.newImage("assets/player1.png")
   player2.img = love.graphics.newImage("assets/player2.png")
+  fruit_spriteSheet = love.graphics.newImage("assets/Vegies.png")
+  frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spriteSheet:getDimensions())
   spr_apple = love.graphics.newImage("assets/apple.png")
   
   player1.location.x = player1.size.x + 24
@@ -73,7 +78,7 @@ function love.draw()
   love.graphics.draw(player2.img, player2.location.x, player2.location.y)
   
   for i, v in ipairs(fruits) do
-    love.graphics.draw(v.img, v.location.x, v.location.y)
+    love.graphics.draw(fruit_spriteSheet, v.img, v.location.x, v.location.y)
   end
 end
 
@@ -84,7 +89,7 @@ function fruitSpawner()
     
     speed = 160,
     
-    img = spr_apple,
+    img = frames[1],
   }
   
   fruit.location.x = math.random(0, love.graphics.getWidth())
