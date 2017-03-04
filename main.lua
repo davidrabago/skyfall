@@ -51,7 +51,7 @@ function love.load()
   monkey_frames[1] = love.graphics.newQuad(5,25, 24, 48, monkey_spritesheet:getDimensions())
   monkey_frames[2] = love.graphics.newQuad(160, 25, 24, 48, monkey_spritesheet:getDimensions())
   
-  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 18))
+  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 14))
   
   player1.location.x = player1.size.x + 24
   player1.location.y = love.graphics.getHeight() - player1.size.y
