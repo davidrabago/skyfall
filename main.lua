@@ -104,6 +104,24 @@ function fruitSpawnApple()
   table.insert(fruits, fruit)
 end
 
+function fruitSpawnBanana()
+  local fruit = {
+    location = vector(),
+    size = vector(24, 24),
+    
+    speed = 160,
+    
+    img = fruit_frames[2],
+    
+    fruitType = "banana",
+  }
+  
+  fruit.location.x = math.random(0, love.graphics.getWidth() - fruit.size.x)
+  fruit.location.y = 0
+  
+  table.insert(fruits, fruit)
+end
+
 function handleTimers(delta)
   tenSecondTimer = tenSecondTimer -  delta
   if tenSecondTimer < 0 then
@@ -122,7 +140,6 @@ function handleTimers(delta)
     fruitTimer = fruitTimerMax
   end
 end
-
 
 function handlePlayerMovement(delta)
   if love.keyboard.isDown("a") then
@@ -194,9 +211,7 @@ function handleFruits(delta)
     end
     
     -- Collisions
-    
     coinFlip = math.random(1,2)
-    
     if(coinFlip==1) then
       if CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
         if v.fruitType == player1.fruitType then 
@@ -215,37 +230,14 @@ function handleFruits(delta)
   end
 end
 
-function fruitSpawnBanana()
-  local fruit = {
-    location = vector(),
-    size = vector(24, 24),
-    
-    speed = 160,
-    
-    img = fruit_frames[2],
-    
-    fruitType = "banana",
-  }
-  
-  fruit.location.x = math.random(0, love.graphics.getWidth() - fruit.size.x)
-  fruit.location.y = 0
-  
-  table.insert(fruits, fruit)
-end
-
 function CheckCollisionVec(loc1, size1, loc2, size2)
   return CheckCollision(loc1.x, loc1.y, size1.x, size1.y, loc2.x, loc2.y, size2.x, size2.y)
 end
 
-
--- Collision detection function.
--- Checks if a and b overlap.
--- w and h mean width and height.
 function CheckCollision(ax1,ay1,aw,ah,bx1,by1,bw,bh)
   local ax2,ay2,bx2,by2 = ax1 + aw, ay1 + ah, bx1 + bw, by1 + bh
   return ax1 < bx2 and ax2 > bx1 and ay1 < by2 and ay2 > by1
 end
-
 
 function moveToPointer(delta)  
   local direction = vector(love.mouse.getX() - player1.location.x, love.mouse.getY() - player1.location.y)
