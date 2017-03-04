@@ -48,7 +48,7 @@ function love.load()
   fruit_frames[2] = love.graphics.newQuad(420, 0, 32, 32, fruit_spritesheet:getDimensions())
   
   monkey_spritesheet = love.graphics.newImage("assets/monkey.png")
-  monkey_frames[1] = love.graphics.newQuad(0,25, 32, 48, monkey_spritesheet:getDimensions())
+  monkey_frames[1] = love.graphics.newQuad(5,25, 24, 48, monkey_spritesheet:getDimensions())
   monkey_frames[2] = love.graphics.newQuad(160, 25, 24, 48, monkey_spritesheet:getDimensions())
   
   love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 18))
