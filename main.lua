@@ -65,14 +65,65 @@ function love.update(delta)
 		love.event.push('quit')
 	end
   
+  handleTimers(delta)
+  handlePlayerMovement(delta)
+  handleFruits(delta)
+end
+
+function love.draw()
+  love.graphics.draw(monkey_spritesheet, monkey_frames[1], player1.location.x, player1.location.y)
+  love.graphics.draw(monkey_spritesheet, monkey_frames[2], player2.location.x, player2.location.y)
+  
+  for i, v in ipairs(fruits) do
+    love.graphics.draw(fruit_spritesheet, v.img, v.location.x, v.location.y)
+  end
+  
+  love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
+  
+  love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
+  love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
+  
+end
+
+function fruitSpawnApple()
+  local fruit = {
+    location = vector(),
+    size = vector(24, 24),
+    
+    speed = 160,
+    
+    img = fruit_frames[1],
+    
+    fruitType = "apple",
+  }
+  
+  fruit.location.x = math.random(0, love.graphics.getWidth())
+  fruit.location.y = 0
+  
+  table.insert(fruits, fruit)
+end
+
+function handleTimers(delta)
   tenSecondTimer = tenSecondTimer -  delta
   if tenSecondTimer < 0 then
     tenSecondTimer = 10
   end
   
-  -- keyboard actions for our characters
-  widthOfGame = love.graphics.getWidth() - 40
-  
+  fruitTimer = fruitTimer - delta
+  if (fruitTimer < 0) then
+    if fruitFlag == 0 then
+      fruitSpawnApple()
+      fruitFlag = 1
+    elseif fruitFlag == 1 then
+      fruitSpawnBanana()
+      fruitFlag = 0
+    end
+    fruitTimer = fruitTimerMax
+  end
+end
+
+
+function handlePlayerMovement(delta)
   if love.keyboard.isDown("a") then
     player1.speed = player1.speed - (player1.accel * delta)
     if player1.speed < player1.max_speed * -1 then
@@ -116,8 +167,10 @@ function love.update(delta)
   elseif player2.location.x + player2.size.x > love.graphics.getWidth() then
     player2.location.x = love.graphics.getWidth() - player2.size.x
   end
-  
-  for i, v in ipairs(fruits) do
+end
+
+function handleFruits(delta)
+    for i, v in ipairs(fruits) do
     local modified = false
     
     v.location.y = v.location.y + (v.speed * delta)
@@ -146,55 +199,7 @@ function love.update(delta)
         end
       end
     end
-    
   end
-  
-  -- Timers
-  fruitTimer = fruitTimer - delta
-  if (fruitTimer < 0) then
-    if fruitFlag == 0 then
-      fruitSpawnApple()
-      fruitFlag = 1
-    elseif fruitFlag == 1 then
-      fruitSpawnBanana()
-      fruitFlag = 0
-    end
-    fruitTimer = fruitTimerMax
-  end
-  
-end
-
-function love.draw()
-  love.graphics.draw(monkey_spritesheet, monkey_frames[1], player1.location.x, player1.location.y)
-  love.graphics.draw(monkey_spritesheet, monkey_frames[2], player2.location.x, player2.location.y)
-  
-  for i, v in ipairs(fruits) do
-    love.graphics.draw(fruit_spritesheet, v.img, v.location.x, v.location.y)
-  end
-  
-  love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
-  
-  love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
-  love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
-  
-end
-
-function fruitSpawnApple()
-  local fruit = {
-    location = vector(),
-    size = vector(24, 24),
-    
-    speed = 160,
-    
-    img = fruit_frames[1],
-    
-    fruitType = "apple",
-  }
-  
-  fruit.location.x = math.random(0, love.graphics.getWidth())
-  fruit.location.y = 0
-  
-  table.insert(fruits, fruit)
 end
 
 function fruitSpawnBanana()
