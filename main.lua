@@ -25,6 +25,8 @@ local spr_apple = nil
 local frames = {}
 local fruit_spriteSheet
 
+local tenSecondTimer = 10
+
 local fruitTimerMax = .25
 local fruitTimer = fruitTimerMax
 local fruits = {}
@@ -46,6 +48,11 @@ function love.load()
 end
 
 function love.update(delta)
+  
+  tenSecondTimer = tenSecondTimer -  delta
+  if tenSecondTimer < 0 then
+    tenSecondTimer = 10
+  end
   
   -- keyboard actions for our characters
   if love.keyboard.isDown("a") then
@@ -80,6 +87,9 @@ function love.draw()
   for i, v in ipairs(fruits) do
     love.graphics.draw(fruit_spriteSheet, v.img, v.location.x, v.location.y)
   end
+  
+  love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
+  
 end
 
 function fruitSpawner()
