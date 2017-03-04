@@ -24,10 +24,11 @@ local player2 = {
   img = nil,
 }
 
-local spr_apple = nil
+local fruit_frames = {}
+local fruit_spritesheet
 
-local frames = {}
-local fruit_spriteSheet
+local monkey_frames = {}
+local monkey_spritesheet
 
 local tenSecondTimer = 10
 
@@ -38,9 +39,13 @@ local fruits = {}
 function love.load()
   player1.img = love.graphics.newImage("assets/player1.png")
   player2.img = love.graphics.newImage("assets/player2.png")
-  fruit_spriteSheet = love.graphics.newImage("assets/Vegies.png")
-  frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spriteSheet:getDimensions())
-  spr_apple = love.graphics.newImage("assets/apple.png")
+  
+  fruit_spritesheet = love.graphics.newImage("assets/Vegies.png")
+  fruit_frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spritesheet:getDimensions())
+  
+  monkey_spritesheet = love.graphics.newImage("assets/monkey.png")
+  monkey_frames[1] = love.graphics.newQuad(0,25, 32, 48, monkey_spritesheet:getDimensions())
+  monkey_frames[2] = love.graphics.newQuad(160, 25, 24, 48, monkey_spritesheet:getDimensions())
   
   player1.location.x = player1.size.x + 24
   player1.location.y = love.graphics.getHeight() - player1.size.y
@@ -101,11 +106,11 @@ function love.update(delta)
 end
 
 function love.draw()
-  love.graphics.draw(player1.img, player1.location.x, player1.location.y)
-  love.graphics.draw(player2.img, player2.location.x, player2.location.y)
+  love.graphics.draw(monkey_spritesheet, monkey_frames[1], player1.location.x, player1.location.y)
+  love.graphics.draw(monkey_spritesheet, monkey_frames[2], player2.location.x, player2.location.y)
   
   for i, v in ipairs(fruits) do
-    love.graphics.draw(fruit_spriteSheet, v.img, v.location.x, v.location.y)
+    love.graphics.draw(fruit_spritesheet, v.img, v.location.x, v.location.y)
   end
   
   love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
@@ -119,7 +124,7 @@ function fruitSpawner()
     
     speed = 160,
     
-    img = frames[1],
+    img = fruit_frames[1],
   }
   
   fruit.location.x = math.random(0, love.graphics.getWidth())
