@@ -41,6 +41,20 @@ function love.load()
 end
 
 function love.update(delta)
+  
+  -- keyboard actions for our characters
+  if love.keyboard.isDown("a") then
+    player1.location.x = player1.location.x - player1.max_speed*delta
+  elseif love.keyboard.isDown("d") then
+    player1.location.x = player1.location.x + player1.max_speed*delta
+  end
+  
+  if love.keyboard.isDown("left") then
+    player2.location.x = player2.location.x - player2.max_speed*delta
+  elseif love.keyboard.isDown("right") then
+    player2.location.x = player2.location.x + player2.max_speed*delta
+  end
+  
   for i, v in ipairs(fruits) do
     v.location.y = v.location.y + (v.speed * delta)
   end
