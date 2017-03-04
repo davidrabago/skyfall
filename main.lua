@@ -172,8 +172,8 @@ end
 
 function handlePlayerCollision(delta)
   if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
-    player1.location.x = player1.location.x - (player1.speed * delta) - (player2.speed * delta)
-    player2.location.x = player2.location.x - (player2.speed * delta) - (player1.speed * delta)
+    player1.location.x = player1.location.x - ((player1.speed-10) * delta)
+    player2.location.x = player2.location.x - ((player2.speed+10) * delta)
     
     local temp = player1.speed
     player1.speed = player2.speed
