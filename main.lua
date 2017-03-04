@@ -2,7 +2,7 @@ local vector = require("lib.hump.vector")
 
 local player1 = {
   location = vector(),
-  size = vector(48, 48),
+  size = vector(24, 48),
   
   max_speed = 400,
   speed = 0,
@@ -17,7 +17,7 @@ local player1 = {
 
 local player2 = {
   location = vector(),
-  size = vector(48, 48),
+  size = vector(24, 48),
   
   max_speed = 400,
   speed = 0,
@@ -67,6 +67,7 @@ function love.update(delta)
   
   handleTimers(delta)
   handlePlayerMovement(delta)
+  handlePlayerCollision(delta)
   handleFruits(delta)
 end
 
@@ -168,6 +169,18 @@ function handlePlayerMovement(delta)
     player2.location.x = love.graphics.getWidth() - player2.size.x
   end
 end
+
+function handlePlayerCollision(delta)
+  if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
+    player1.location.x = player1.location.x - (player1.speed * delta) - (player2.speed * delta)
+    player2.location.x = player2.location.x - (player2.speed * delta) - (player1.speed * delta)
+    
+    local temp = player1.speed
+    player1.speed = player2.speed
+    player2.speed = temp
+  end
+end
+
 
 function handleFruits(delta)
     for i, v in ipairs(fruits) do
