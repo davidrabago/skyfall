@@ -36,12 +36,12 @@ local fruitTimerMax = .25
 local fruitTimer = fruitTimerMax
 local fruits = {}
 
+local fruitFlag = 0
+
 function love.load()
-  player1.img = love.graphics.newImage("assets/player1.png")
-  player2.img = love.graphics.newImage("assets/player2.png")
-  
   fruit_spritesheet = love.graphics.newImage("assets/Vegies.png")
   fruit_frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spritesheet:getDimensions())
+  fruit_frames[2] = love.graphics.newQuad(420, 0, 32, 32, fruit_spritesheet:getDimensions())
   
   monkey_spritesheet = love.graphics.newImage("assets/monkey.png")
   monkey_frames[1] = love.graphics.newQuad(0,25, 32, 48, monkey_spritesheet:getDimensions())
@@ -54,8 +54,6 @@ function love.load()
   
   player2.location.x = love.graphics.getWidth() - player2.size.x - 24
   player2.location.y = love.graphics.getHeight() - player2.size.y
-  
-  fruitSpawner()
 end
 
 function love.update(delta)
@@ -111,7 +109,13 @@ function love.update(delta)
   -- Timers
   fruitTimer = fruitTimer - delta
   if (fruitTimer < 0) then
-    fruitSpawner()
+    if fruitFlag == 0 then
+      fruitSpawnApple()
+      fruitFlag = 1
+    elseif fruitFlag == 1 then
+      fruitSpawnBanana()
+      fruitFlag = 0
+    end
     fruitTimer = fruitTimerMax
   end
   
@@ -132,7 +136,7 @@ function love.draw()
   
 end
 
-function fruitSpawner()
+function fruitSpawnApple()
   local fruit = {
     location = vector(),
     size = vector(24, 24),
@@ -140,6 +144,22 @@ function fruitSpawner()
     speed = 160,
     
     img = fruit_frames[1],
+  }
+  
+  fruit.location.x = math.random(0, love.graphics.getWidth())
+  fruit.location.y = 0
+  
+  table.insert(fruits, fruit)
+end
+
+function fruitSpawnBanana()
+  local fruit = {
+    location = vector(),
+    size = vector(24, 24),
+    
+    speed = 160,
+    
+    img = fruit_frames[2],
   }
   
   fruit.location.x = math.random(0, love.graphics.getWidth())
