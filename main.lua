@@ -5,7 +5,8 @@ local player1 = {
   size = vector(48, 48),
   
   max_speed = 400,
-  accel = 20,
+  speed = 0,
+  accel = 1000,
   
   score = 0,
   
@@ -19,7 +20,8 @@ local player2 = {
   size = vector(48, 48),
   
   max_speed = 400,
-  accel = 20,
+  speed = 0,
+  accel = 1000,
   
   score = 0,
   
@@ -59,6 +61,9 @@ function love.load()
 end
 
 function love.update(delta)
+  if love.keyboard.isDown('escape') then
+		love.event.push('quit')
+	end
   
   tenSecondTimer = tenSecondTimer -  delta
   if tenSecondTimer < 0 then
@@ -69,23 +74,47 @@ function love.update(delta)
   widthOfGame = love.graphics.getWidth() - 40
   
   if love.keyboard.isDown("a") then
-    if player1.location.x > 0 then
-      player1.location.x = player1.location.x - player1.max_speed*delta
+    player1.speed = player1.speed - (player1.accel * delta)
+    if player1.speed < player1.max_speed * -1 then
+      player1.speed = -player1.max_speed
     end
   elseif love.keyboard.isDown("d") then
-    if player1.location.x < widthOfGame then
-    player1.location.x = player1.location.x + player1.max_speed*delta
+    player1.speed = player1.speed + (player1.accel * delta)
+    if player1.speed > player1.max_speed then
+      player1.speed = player1.max_speed
     end
+  else
+    if player1.speed > 0 then player1.speed = player1.speed - (player1.accel * delta) end
+    if player1.speed < 0 then player1.speed = player1.speed + (player1.accel * delta) end
+  end
+  
+  player1.location.x = player1.location.x + (player1.speed * delta)
+  if player1.location.x < 0 then 
+    player1.location.x = 0 
+  elseif player1.location.x + player1.size.x > love.graphics.getWidth() then
+    player1.location.x = love.graphics.getWidth() - player1.size.x
   end
   
   if love.keyboard.isDown("left") then
-    if player2.location.x > 0 then
-      player2.location.x = player2.location.x - player2.max_speed*delta
+    player2.speed = player2.speed - (player2.accel * delta)
+    if player2.speed < player2.max_speed * -1 then
+      player2.speed = -player2.max_speed
     end
   elseif love.keyboard.isDown("right") then
-    if player2.location.x < widthOfGame then
-    player2.location.x = player2.location.x + player2.max_speed*delta
+    player2.speed = player2.speed + (player2.accel * delta)
+    if player2.speed > player2.max_speed then
+      player2.speed = player2.max_speed
     end
+  else
+    if player2.speed > 0 then player2.speed = player2.speed - (player2.accel * delta) end
+    if player2.speed < 0 then player2.speed = player2.speed + (player2.accel * delta) end
+  end
+  
+  player2.location.x = player2.location.x + (player2.speed * delta)
+  if player2.location.x < 0 then 
+    player2.location.x = 0 
+  elseif player2.location.x + player2.size.x > love.graphics.getWidth() then
+    player2.location.x = love.graphics.getWidth() - player2.size.x
   end
   
   for i, v in ipairs(fruits) do
