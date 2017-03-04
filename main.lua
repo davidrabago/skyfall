@@ -1,23 +1,83 @@
 local vector = require("lib.hump.vector")
+local timer = require("lib.hump.timer")
 
 local player1 = {
-  location = vector(250, 250),
+  location = vector(),
+  size = vector(48, 48),
+  
   max_speed = 400,
-  decel = 5,
+  accel = 20,
   
   img = nil,
 }
+
+local player2 = {
+  location = vector(),
+  size = vector(48, 48),
   
+  max_speed = 400,
+  accel = 20,
+  
+  img = nil,
+}
+
+local spr_apple = nil
+
+local fruits = {}
+
 function love.load()
   player1.img = love.graphics.newImage("assets/player1.png")
+  player2.img = love.graphics.newImage("assets/player2.png")
+  spr_apple = love.graphics.newImage("assets/apple.png")
+  
+  player1.location.x = player1.size.x + 24
+  player1.location.y = love.graphics.getHeight() - player1.size.y
+  
+  player2.location.x = love.graphics.getWidth() - player2.size.x - 24
+  player2.location.y = love.graphics.getHeight() - player2.size.y
+  
+  fruitSpawner()
 end
 
 function love.update(delta)
-  
+  for i, v in ipairs(fruits) do
+    v.location.y = v.location.y - v.speed
+  end
 end
 
 function love.draw()
   love.graphics.draw(player1.img, player1.location.x, player1.location.y)
+  love.graphics.draw(player2.img, player2.location.x, player2.location.y)
+  
+  for i, v in ipairs(fruits) do
+    love.graphics.draw(v.img, v.location.x, v.location.y)
+  end
+end
+
+function fruitSpawner()
+  local fruit = {
+    location = vector(),
+    size = vector(24, 24),
+    
+    speed = 20,
+    
+    img = spr_apple,
+  }
+  
+  fruit.location.x = math.random(0, love.graphics.getWidth())
+  fruit.location.y = 0
+  
+  table.insert(fruits, fruit)
+  
+  print "hi"
+  for k, v in pairs( fruits ) do
+   for i, v2 in pairs (v) do
+     print(i, v2)
+   end
+   
+  end
+  
+  timer.after(1, fruitSpawner)
 end
 
 function moveToPointer(delta)  
