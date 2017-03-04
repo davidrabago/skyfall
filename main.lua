@@ -1,5 +1,4 @@
 local vector = require("lib.hump.vector")
-local timer = require("lib.hump.timer")
 
 local player1 = {
   location = vector(),
@@ -23,6 +22,8 @@ local player2 = {
 
 local spr_apple = nil
 
+local fruitTimerMax = .25
+local fruitTimer = fruitTimerMax
 local fruits = {}
 
 function love.load()
@@ -41,8 +42,16 @@ end
 
 function love.update(delta)
   for i, v in ipairs(fruits) do
-    v.location.y = v.location.y - v.speed
+    v.location.y = v.location.y + (v.speed * delta)
   end
+  
+  -- Timers
+  fruitTimer = fruitTimer - delta
+  if (fruitTimer < 0) then
+    fruitSpawner()
+    fruitTimer = fruitTimerMax
+  end
+  
 end
 
 function love.draw()
@@ -59,7 +68,7 @@ function fruitSpawner()
     location = vector(),
     size = vector(24, 24),
     
-    speed = 20,
+    speed = 160,
     
     img = spr_apple,
   }
@@ -68,16 +77,6 @@ function fruitSpawner()
   fruit.location.y = 0
   
   table.insert(fruits, fruit)
-  
-  print "hi"
-  for k, v in pairs( fruits ) do
-   for i, v2 in pairs (v) do
-     print(i, v2)
-   end
-   
-  end
-  
-  timer.after(1, fruitSpawner)
 end
 
 function moveToPointer(delta)  
