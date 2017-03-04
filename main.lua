@@ -97,7 +97,7 @@ function fruitSpawnApple()
     fruitType = "apple",
   }
   
-  fruit.location.x = math.random(0, love.graphics.getWidth())
+  fruit.location.x = math.random(0, love.graphics.getWidth() - fruit.size.x)
   fruit.location.y = 0
   
   table.insert(fruits, fruit)
@@ -214,7 +214,7 @@ function fruitSpawnBanana()
     fruitType = "banana",
   }
   
-  fruit.location.x = math.random(0, love.graphics.getWidth())
+  fruit.location.x = math.random(0, love.graphics.getWidth() - fruit.size.x)
   fruit.location.y = 0
   
   table.insert(fruits, fruit)
