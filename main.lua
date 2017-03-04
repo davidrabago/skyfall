@@ -47,6 +47,8 @@ function love.load()
   monkey_frames[1] = love.graphics.newQuad(0,25, 32, 48, monkey_spritesheet:getDimensions())
   monkey_frames[2] = love.graphics.newQuad(160, 25, 24, 48, monkey_spritesheet:getDimensions())
   
+  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 18))
+  
   player1.location.x = player1.size.x + 24
   player1.location.y = love.graphics.getHeight() - player1.size.y
   
@@ -114,6 +116,9 @@ function love.draw()
   end
   
   love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
+  
+  love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
+  love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
   
 end
 
