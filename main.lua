@@ -66,16 +66,26 @@ function love.update(delta)
   end
   
   -- keyboard actions for our characters
+  widthOfGame = love.graphics.getWidth() - 40
+  
   if love.keyboard.isDown("a") then
-    player1.location.x = player1.location.x - player1.max_speed*delta
+    if player1.location.x > 0 then
+      player1.location.x = player1.location.x - player1.max_speed*delta
+    end
   elseif love.keyboard.isDown("d") then
+    if player1.location.x < widthOfGame then
     player1.location.x = player1.location.x + player1.max_speed*delta
+    end
   end
   
   if love.keyboard.isDown("left") then
-    player2.location.x = player2.location.x - player2.max_speed*delta
+    if player2.location.x > 0 then
+      player2.location.x = player2.location.x - player2.max_speed*delta
+    end
   elseif love.keyboard.isDown("right") then
+    if player2.location.x < widthOfGame then
     player2.location.x = player2.location.x + player2.max_speed*delta
+    end
   end
   
   for i, v in ipairs(fruits) do
