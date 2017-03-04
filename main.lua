@@ -97,13 +97,27 @@ function love.update(delta)
     end
     
     -- Collisions
-    if CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
-      player1.score = player1.score + 1
-      table.remove(fruits, i)
-    elseif CheckCollisionVec(v.location, v.size, player2.location, player2.size) and not modified then
-      player2.score = player2.score + 1
-      table.remove(fruits, i)
+    
+    coinFlip = math.random(1,2)
+    
+    if(coinFlip==1) then
+      if CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
+        player1.score = player1.score + 1
+        table.remove(fruits, i)
+      elseif CheckCollisionVec(v.location, v.size, player2.location, player2.size) and not modified then
+        player2.score = player2.score + 1
+        table.remove(fruits, i)
+      end
+    elseif(coinFlip==2) then
+      if CheckCollisionVec(v.location, v.size, player2.location, player2.size) and not modified then
+        player2.score = player2.score + 1
+        table.remove(fruits, i)
+      elseif CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
+        player1.score = player1.score + 1
+        table.remove(fruits, i)
+      end
     end
+    
   end
   
   -- Timers
