@@ -10,6 +10,8 @@ local player1 = {
   score = 0,
   
   img = nil,
+  
+  fruitType = "apple",
 }
 
 local player2 = {
@@ -21,7 +23,7 @@ local player2 = {
   
   score = 0,
   
-  img = nil,
+  fruitType = "banana",
 }
 
 local fruit_frames = {}
@@ -102,19 +104,17 @@ function love.update(delta)
     
     if(coinFlip==1) then
       if CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
-        player1.score = player1.score + 1
-        table.remove(fruits, i)
-      elseif CheckCollisionVec(v.location, v.size, player2.location, player2.size) and not modified then
-        player2.score = player2.score + 1
-        table.remove(fruits, i)
+        if v.fruitType == player1.fruitType then 
+          player1.score = player1.score + 1
+          table.remove(fruits, i)
+        end
       end
     elseif(coinFlip==2) then
       if CheckCollisionVec(v.location, v.size, player2.location, player2.size) and not modified then
-        player2.score = player2.score + 1
-        table.remove(fruits, i)
-      elseif CheckCollisionVec(v.location, v.size, player1.location, player1.size) and not modified then
-        player1.score = player1.score + 1
-        table.remove(fruits, i)
+        if v.fruitType == player2.fruitType then
+          player2.score = player2.score + 1
+          table.remove(fruits, i)
+        end
       end
     end
     
@@ -158,6 +158,8 @@ function fruitSpawnApple()
     speed = 160,
     
     img = fruit_frames[1],
+    
+    fruitType = "apple",
   }
   
   fruit.location.x = math.random(0, love.graphics.getWidth())
@@ -174,6 +176,8 @@ function fruitSpawnBanana()
     speed = 160,
     
     img = fruit_frames[2],
+    
+    fruitType = "banana",
   }
   
   fruit.location.x = math.random(0, love.graphics.getWidth())
@@ -190,7 +194,7 @@ end
 -- Collision detection function.
 -- Checks if a and b overlap.
 -- w and h mean width and height.
-function CheckCollision(ax1,ay1,aw,ah, bx1,by1,bw,bh)
+function CheckCollision(ax1,ay1,aw,ah,bx1,by1,bw,bh)
   local ax2,ay2,bx2,by2 = ax1 + aw, ay1 + ah, bx1 + bw, by1 + bh
   return ax1 < bx2 and ax2 > bx1 and ay1 < by2 and ay2 > by1
 end
