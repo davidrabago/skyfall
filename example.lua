@@ -1,5 +1,10 @@
 -- from [LÖVE tutorial, part 2](http://www.headchant.com/2010/12/31/love2d-%E2%80%93-tutorial-part-2-pew-pew/)
 
+
+--[[fruitImg = love.graphics.newImage("assets/Vegies.png")
+frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruitImg:getDimensions())
+http://www.gamefromscratch.com/post/2016/03/22/Love2D-Using-Sprites-Tutorial.aspx
+]]--
 function love.load(arg)
   if arg and arg[#arg] == "-debug" then require("mobdebug").start() end
   hero = {} -- new table for the hero
