@@ -1,6 +1,6 @@
 ------------------------------------- Imports ------------------------------------------------------------
 local vector = require("lib.hump.vector")
-
+local isEnd
 ------------------------------------- Declarations ------------------------------------------------------------
 local player1 = {
   location = vector(),
@@ -77,6 +77,23 @@ function love.update(delta)
   handlePlayerMovement(delta)
   handlePlayerCollision(delta)
   handleFruits(delta)
+  
+  if(isEnd) then
+    if love.keyboard.isDown("r")  then
+      player1.location.x = player1.size.x + 24
+      player1.location.y = love.graphics.getHeight() - player1.size.y
+      player1.speed.x = 0
+      player1.speed.y = 0
+      player1.score = 0
+      player2.location.x = love.graphics.getWidth() - player2.size.x - 24
+      player2.location.y = love.graphics.getHeight() - player2.size.y
+      player2.speed.x = 0
+      player2.speed.y = 0
+      player2.score = 0
+      tenSecondTimer = 10
+      isEnd = false
+    end
+  end
 end
 
 ------------------------------------- Drawing Stuff to Screen ------------------------------------------------------------
@@ -96,6 +113,10 @@ function love.draw()
   love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
   love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
   
+  if(isEnd) then
+    love.graphics.printf("GAME OVER",0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
+    love.graphics.printf("Press 'r' to restart game.",0, love.graphics.getHeight()/2 + 20, love.graphics.getWidth(), 'center')
+  end
 end
 
 ------------------------------------- Spawning Stuff ------------------------------------------------------------
@@ -314,12 +335,14 @@ end
 ------------------------------------- End Game ------------------------------------------------------------
 function endGame() 
   removeFruit()
-  --displayScore()
-  --offerRestart()
+  offerRestart()
 end
 
 function removeFruit()
   fruits = {}
 end
 
+function offerRestart()
+  isEnd = true
+end
 ------------------------------------- The End ------------------------------------------------------------
