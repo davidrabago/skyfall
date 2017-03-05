@@ -58,8 +58,6 @@ function love.load()
   monkey_frames[1] = love.graphics.newQuad(5,25, 24, 48, monkey_spritesheet:getDimensions())
   monkey_frames[2] = love.graphics.newQuad(160, 25, 24, 48, monkey_spritesheet:getDimensions())
   
-  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 14))
-  
   player1.location.x = player1.size.x + 24
   player1.location.y = love.graphics.getHeight() - player1.size.y
   
@@ -106,10 +104,12 @@ function love.draw()
     love.graphics.draw(fruit_spritesheet, v.img, v.location.x, v.location.y)
   end
   
+  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 48))
   if math.ceil(tenSecondTimer) > 0 then
-    love.graphics.print("Time: " .. math.ceil(tenSecondTimer), love.graphics.getWidth()/2)
+    love.graphics.print(math.ceil(tenSecondTimer), love.graphics.getWidth()/2)
   end
   
+  love.graphics.setFont(love.graphics.newFont("assets/score.ttf", 14))
   love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
   love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
   
