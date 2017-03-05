@@ -273,22 +273,25 @@ function handlePlayerCollision(delta)
 end
 
 ------------------------------------- Player Slapping ------------------------------------------------------------
+local slap_range = 45
+local slap_hit = 2
+
 function slap1(delta)
-  if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
+  if (player1.location + player1.size/2):dist(player2.location + player2.size/2) < slap_range then
     if player2.speed ~= 0 then
-      player2.speed = (player2.speed * -1) * 10
+      player2.speed = (player2.speed * -1) * slap_hit
     else 
-      player2.speed = player1.speed * 10
+      player2.speed = player1.speed * slap_hit
     end
   end
 end
 
 function slap2(delta)
-  if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
-    if(player1.speed ~= 0) then 
-      player1.speed = (player1.speed * -1) * 10
+  if (player2.location + player2.size/2):dist(player1.location + player1.size/2) < slap_range then
+    if player1.speed ~= 0 then 
+      player1.speed = (player1.speed * -1) * slap_hit
     else 
-      player1.speed = player2.speed * 10
+      player1.speed = player2.speed * slap_hit
     end
   end
 end
