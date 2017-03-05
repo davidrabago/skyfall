@@ -30,6 +30,8 @@ local player2 = {
   fruitType = "banana",
 }
 
+local background_img
+
 local fruit_frames = {}
 local fruit_spritesheet
 
@@ -46,6 +48,8 @@ local fruitFlag = 0
 
 ------------------------------------- On Start Actions ------------------------------------------------------------
 function love.load()
+  background_img = love.graphics.newImage("assets/background.jpg")
+  
   fruit_spritesheet = love.graphics.newImage("assets/Vegies.png")
   fruit_frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spritesheet:getDimensions())
   fruit_frames[2] = love.graphics.newQuad(420, 0, 32, 32, fruit_spritesheet:getDimensions())
@@ -77,6 +81,7 @@ end
 
 ------------------------------------- Drawing Stuff to Screen ------------------------------------------------------------
 function love.draw()
+  love.graphics.draw(background_img, 0, 0)
   love.graphics.draw(monkey_spritesheet, monkey_frames[1], player1.location.x, player1.location.y)
   love.graphics.draw(monkey_spritesheet, monkey_frames[2], player2.location.x, player2.location.y)
   
