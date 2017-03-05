@@ -158,9 +158,9 @@ function handlePlayerMovement(delta)
   
   --Implements Jump for Player 1
   if love.keyboard.isDown("w") and player1.speed.y <= 0 and player1.location.y >= love.graphics.getHeight() - player1.size.y then
-    player1.speed.y = 80
+    player1.speed.y = 45
   end
-  player1.location.y = player1.location.y - (player1.speed.y * delta * 2)
+  player1.location.y = player1.location.y - (player1.speed.y * delta * 10)
   if player1.location.y >= love.graphics.getHeight() - player1.size.y then
     player1.speed.y = 0
     player1.location.y = love.graphics.getHeight() - player1.size.y
@@ -199,9 +199,9 @@ function handlePlayerMovement(delta)
   
   --Implements Jump for Player 2
   if love.keyboard.isDown("up") and player2.speed.y <= 0 and player2.location.y >= love.graphics.getHeight() - player2.size.y then
-    player2.speed.y = 80
+    player2.speed.y = 45
   end
-  player2.location.y = player2.location.y - (player2.speed.y * delta * 2)
+  player2.location.y = player2.location.y - (player2.speed.y * delta * 10)
   if player2.location.y >= love.graphics.getHeight() - player2.size.y then
     player2.speed.y = 0
     player2.location.y = love.graphics.getHeight() - player2.size.y
