@@ -1,5 +1,7 @@
+------------------------------------- Imports ------------------------------------------------------------
 local vector = require("lib.hump.vector")
 
+------------------------------------- Declarations ------------------------------------------------------------
 local player1 = {
   location = vector(),
   size = vector(24, 48),
@@ -42,6 +44,7 @@ local fruits = {}
 
 local fruitFlag = 0
 
+------------------------------------- On Start Actions ------------------------------------------------------------
 function love.load()
   fruit_spritesheet = love.graphics.newImage("assets/Vegies.png")
   fruit_frames[1] = love.graphics.newQuad(0, 0, 32, 32, fruit_spritesheet:getDimensions())
@@ -60,6 +63,7 @@ function love.load()
   player2.location.y = love.graphics.getHeight() - player2.size.y
 end
 
+------------------------------------- Update Screen ------------------------------------------------------------
 function love.update(delta)
   if love.keyboard.isDown('escape') then
 		love.event.push('quit')
@@ -71,6 +75,7 @@ function love.update(delta)
   handleFruits(delta)
 end
 
+------------------------------------- Drawing Stuff to Screen ------------------------------------------------------------
 function love.draw()
   love.graphics.draw(monkey_spritesheet, monkey_frames[1], player1.location.x, player1.location.y)
   love.graphics.draw(monkey_spritesheet, monkey_frames[2], player2.location.x, player2.location.y)
@@ -86,6 +91,7 @@ function love.draw()
   
 end
 
+------------------------------------- Spawning Stuff ------------------------------------------------------------
 function fruitSpawnApple()
   local fruit = {
     location = vector(),
@@ -122,6 +128,7 @@ function fruitSpawnBanana()
   table.insert(fruits, fruit)
 end
 
+------------------------------------- Timers ------------------------------------------------------------
 function handleTimers(delta)
   tenSecondTimer = tenSecondTimer -  delta
   if tenSecondTimer < 0 then
@@ -141,6 +148,7 @@ function handleTimers(delta)
   end
 end
 
+------------------------------------- Player Controlls ------------------------------------------------------------
 function handlePlayerMovement(delta)
   if love.keyboard.isDown("a") then
     player1.speed = player1.speed - (player1.accel * delta)
@@ -187,6 +195,7 @@ function handlePlayerMovement(delta)
   end
 end
 
+------------------------------------- Player Bashing ------------------------------------------------------------
 function handlePlayerCollision(delta)
   if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
     player1.location.x = player1.location.x - ((player1.speed-10) * delta)
@@ -198,7 +207,7 @@ function handlePlayerCollision(delta)
   end
 end
 
-
+------------------------------------- Fruits ------------------------------------------------------------
 function handleFruits(delta)
     for i, v in ipairs(fruits) do
     local modified = false
@@ -229,7 +238,7 @@ function handleFruits(delta)
     end
   end
 end
-
+------------------------------------- Collision Function ------------------------------------------------------------
 function CheckCollisionVec(loc1, size1, loc2, size2)
   return CheckCollision(loc1.x, loc1.y, size1.x, size1.y, loc2.x, loc2.y, size2.x, size2.y)
 end
@@ -238,14 +247,4 @@ function CheckCollision(ax1,ay1,aw,ah,bx1,by1,bw,bh)
   local ax2,ay2,bx2,by2 = ax1 + aw, ay1 + ah, bx1 + bw, by1 + bh
   return ax1 < bx2 and ax2 > bx1 and ay1 < by2 and ay2 > by1
 end
-
-function moveToPointer(delta)  
-  local direction = vector(love.mouse.getX() - player1.location.x, love.mouse.getY() - player1.location.y)
-  local distance = direction:len()
-  local unit = direction:normalized()
-  
-  local speed = math.min(distance * player1.decel, player1.max_speed)
-  local movement = unit * (speed * delta)
-  
-  player1.location = player1.location + movement
-end
+------------------------------------- The End ------------------------------------------------------------
