@@ -7,7 +7,7 @@ local player1 = {
   size = vector(24, 48),
   
   max_speed = 400,
-  speed = 0,
+  speed = vector(0,0),
   accel = 1000,
   
   score = 0,
@@ -22,7 +22,7 @@ local player2 = {
   size = vector(24, 48),
   
   max_speed = 400,
-  speed = 0,
+  speed = vector(0,0),
   accel = 1000,
   
   score = 0,
@@ -155,44 +155,76 @@ end
 
 ------------------------------------- Player Controlls ------------------------------------------------------------
 function handlePlayerMovement(delta)
-  if love.keyboard.isDown("a") then
-    player1.speed = player1.speed - (player1.accel * delta)
-    if player1.speed < player1.max_speed * -1 then
-      player1.speed = -player1.max_speed
-    end
-  elseif love.keyboard.isDown("d") then
-    player1.speed = player1.speed + (player1.accel * delta)
-    if player1.speed > player1.max_speed then
-      player1.speed = player1.max_speed
-    end
+  
+  --Implements Jump for Player 1
+  if love.keyboard.isDown("w") and player1.speed.y <= 0 and player1.location.y >= love.graphics.getHeight() - player1.size.y then
+    player1.speed.y = 80
+  end
+  player1.location.y = player1.location.y - (player1.speed.y * delta * 2)
+  if player1.location.y >= love.graphics.getHeight() - player1.size.y then
+    player1.speed.y = 0
+    player1.location.y = love.graphics.getHeight() - player1.size.y
   else
-    if player1.speed > 0 then player1.speed = player1.speed - (player1.accel * delta) end
-    if player1.speed < 0 then player1.speed = player1.speed + (player1.accel * delta) end
+    player1.speed.y = player1.speed.y + (-75 * delta)
   end
   
-  player1.location.x = player1.location.x + (player1.speed * delta)
+  if player1.location.y > love.graphics.getHeight() - player1.size.y then
+    player1.speed.y = player1.speed.y - (10 * delta)
+  end
+  
+  if love.keyboard.isDown("a") then
+    player1.speed.x = player1.speed.x - (player1.accel * delta)
+    if player1.speed.x < player1.max_speed * -1 then
+      player1.speed.x = -player1.max_speed
+    end
+  elseif love.keyboard.isDown("d") then
+    player1.speed.x = player1.speed.x + (player1.accel * delta)
+    if player1.speed.x > player1.max_speed then
+      player1.speed.x = player1.max_speed
+    end
+  else
+    if player1.speed.x > 0 then player1.speed.x = player1.speed.x - (player1.accel * delta) end
+    if player1.speed.x < 0 then player1.speed.x = player1.speed.x + (player1.accel * delta) end
+  end
+  
+  player1.location.x = player1.location.x + (player1.speed.x * delta)
   if player1.location.x < 0 then 
     player1.location.x = 0 
   elseif player1.location.x + player1.size.x > love.graphics.getWidth() then
     player1.location.x = love.graphics.getWidth() - player1.size.x
   end
   
-  if love.keyboard.isDown("left") then
-    player2.speed = player2.speed - (player2.accel * delta)
-    if player2.speed < player2.max_speed * -1 then
-      player2.speed = -player2.max_speed
-    end
-  elseif love.keyboard.isDown("right") then
-    player2.speed = player2.speed + (player2.accel * delta)
-    if player2.speed > player2.max_speed then
-      player2.speed = player2.max_speed
-    end
+  --Implements Jump for Player 2
+  if love.keyboard.isDown("up") and player2.speed.y <= 0 and player2.location.y >= love.graphics.getHeight() - player2.size.y then
+    player2.speed.y = 80
+  end
+  player2.location.y = player2.location.y - (player2.speed.y * delta * 2)
+  if player2.location.y >= love.graphics.getHeight() - player2.size.y then
+    player2.speed.y = 0
+    player2.location.y = love.graphics.getHeight() - player2.size.y
   else
-    if player2.speed > 0 then player2.speed = player2.speed - (player2.accel * delta) end
-    if player2.speed < 0 then player2.speed = player2.speed + (player2.accel * delta) end
+    player2.speed.y = player2.speed.y + (-75 * delta)
+  end
+  if player2.location.y > love.graphics.getHeight() - player2.size.y then
+    player2.speed.y = player2.speed.y - (10 * delta)
   end
   
-  player2.location.x = player2.location.x + (player2.speed * delta)
+  if love.keyboard.isDown("left") then
+    player2.speed.x = player2.speed.x - (player2.accel * delta)
+    if player2.speed.x < player2.max_speed * -1 then
+      player2.speed.x = -player2.max_speed
+    end
+  elseif love.keyboard.isDown("right") then
+    player2.speed.x = player2.speed.x + (player2.accel * delta)
+    if player2.speed.x > player2.max_speed then
+      player2.speed.x = player2.max_speed
+    end
+  else
+    if player2.speed.x > 0 then player2.speed.x = player2.speed.x - (player2.accel * delta) end
+    if player2.speed.x < 0 then player2.speed.x = player2.speed.x + (player2.accel * delta) end
+  end
+  
+  player2.location.x = player2.location.x + (player2.speed.x * delta)
   if player2.location.x < 0 then 
     player2.location.x = 0 
   elseif player2.location.x + player2.size.x > love.graphics.getWidth() then
@@ -203,8 +235,8 @@ end
 ------------------------------------- Player Bashing ------------------------------------------------------------
 function handlePlayerCollision(delta)
   if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
-    player1.location.x = player1.location.x - ((player1.speed-10) * delta)
-    player2.location.x = player2.location.x - ((player2.speed+10) * delta)
+    player1.location.x = player1.location.x - ((player1.speed.x-10) * delta)
+    player2.location.x = player2.location.x - ((player2.speed.x+10) * delta)
     
     local temp = player1.speed
     player1.speed = player2.speed
