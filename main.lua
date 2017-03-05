@@ -155,7 +155,6 @@ end
 
 ------------------------------------- Player Controlls ------------------------------------------------------------
 function handlePlayerMovement(delta)
-  
   --Implements Jump for Player 1
   if love.keyboard.isDown("w") and player1.speed.y <= 0 and player1.location.y >= love.graphics.getHeight() - player1.size.y then
     player1.speed.y = 45
@@ -184,7 +183,6 @@ function handlePlayerMovement(delta)
     end
   elseif love.keyboard.isDown("s") then
     slap1()
-    end
   else
     if player1.speed.x > 0 then player1.speed.x = player1.speed.x - (player1.accel * delta) end
     if player1.speed.x < 0 then player1.speed.x = player1.speed.x + (player1.accel * delta) end
@@ -201,6 +199,7 @@ function handlePlayerMovement(delta)
   if love.keyboard.isDown("up") and player2.speed.y <= 0 and player2.location.y >= love.graphics.getHeight() - player2.size.y then
     player2.speed.y = 45
   end
+  
   player2.location.y = player2.location.y - (player2.speed.y * delta * 10)
   if player2.location.y >= love.graphics.getHeight() - player2.size.y then
     player2.speed.y = 0
@@ -208,6 +207,7 @@ function handlePlayerMovement(delta)
   else
     player2.speed.y = player2.speed.y + (-75 * delta)
   end
+  
   if player2.location.y > love.graphics.getHeight() - player2.size.y then
     player2.speed.y = player2.speed.y - (10 * delta)
   end
@@ -224,7 +224,6 @@ function handlePlayerMovement(delta)
     end
   elseif love.keyboard.isDown("down") then
     slap2()
-    end
   else
     if player2.speed.x > 0 then player2.speed.x = player2.speed.x - (player2.accel * delta) end
     if player2.speed.x < 0 then player2.speed.x = player2.speed.x + (player2.accel * delta) end
@@ -253,14 +252,21 @@ end
 ------------------------------------- Player Slapping ------------------------------------------------------------
 function slap1(delta)
   if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
-    if(player2.speed ~= 0) player2.speed = (player2.speed * -1) * 10
-    else player2.speed = player1.speed * 10
+    if player2.speed ~= 0 then
+      player2.speed = (player2.speed * -1) * 10
+    else 
+      player2.speed = player1.speed * 10
+    end
   end
 end
+
 function slap2(delta)
   if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
-    if(player1.speed ~= 0) player1.speed = (player1.speed * -1) * 10
-    else player1.speed = player2.speed * 10
+    if(player1.speed ~= 0) then 
+      player1.speed = (player1.speed * -1) * 10
+    else 
+      player1.speed = player2.speed * 10
+    end
   end
 end
 ------------------------------------- Fruits ------------------------------------------------------------
