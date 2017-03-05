@@ -114,8 +114,15 @@ function love.draw()
   love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
   
   if(isEnd) then
-    love.graphics.printf("GAME OVER",0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
-    love.graphics.printf("Press 'r' to restart game.",0, love.graphics.getHeight()/2 + 20, love.graphics.getWidth(), 'center')
+    if(player1.score>player2.score) then 
+      love.graphics.printf("Player 1 Wins",0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
+    elseif(player2.score>player1.score) then 
+      love.graphics.printf("Player 2 Wins",0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
+    else 
+      love.graphics.printf("Its a Tie",0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
+    end
+    love.graphics.printf("GAME OVER",0, love.graphics.getHeight()/2 - 20, love.graphics.getWidth(), 'center')
+    love.graphics.printf("Press 'r' to restart game",0, love.graphics.getHeight()/2 + 20, love.graphics.getWidth(), 'center')
   end
 end
 
