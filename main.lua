@@ -202,11 +202,17 @@ function handlePlayerMovement(delta)
   end
   
   if love.keyboard.isDown("a") then
+    if love.keyboard.isDown("s") then
+      slap1()
+    end
     player1.speed.x = player1.speed.x - (player1.accel * delta)
     if player1.speed.x < player1.max_speed * -1 then
       player1.speed.x = -player1.max_speed
     end
   elseif love.keyboard.isDown("d") then
+    if love.keyboard.isDown("s") then
+      slap1()
+    end
     player1.speed.x = player1.speed.x + (player1.accel * delta)
     if player1.speed.x > player1.max_speed then
       player1.speed.x = player1.max_speed
@@ -243,11 +249,17 @@ function handlePlayerMovement(delta)
   end
   
   if love.keyboard.isDown("left") then
+    if love.keyboard.isDown("down") then
+      slap2()
+    end
     player2.speed.x = player2.speed.x - (player2.accel * delta)
     if player2.speed.x < player2.max_speed * -1 then
       player2.speed.x = -player2.max_speed
     end
   elseif love.keyboard.isDown("right") then
+    if love.keyboard.isDown("down") then
+      slap2()
+    end
     player2.speed.x = player2.speed.x + (player2.accel * delta)
     if player2.speed.x > player2.max_speed then
       player2.speed.x = player2.max_speed
@@ -280,25 +292,25 @@ function handlePlayerCollision(delta)
 end
 
 ------------------------------------- Player Slapping ------------------------------------------------------------
-local slap_range = 45
-local slap_hit = 2
+local slap_range = 60
+local slap_hit = 1199
 
 function slap1(delta)
   if (player1.location + player1.size/2):dist(player2.location + player2.size/2) < slap_range then
-    if player2.speed ~= 0 then
-      player2.speed = (player2.speed * -1) * slap_hit
-    else 
-      player2.speed = player1.speed * slap_hit
+    if player2.speed.x < 0 then
+      player2.speed.x = -slap_hit
+    else
+      player2.speed.x = slap_hit
     end
   end
 end
 
 function slap2(delta)
   if (player2.location + player2.size/2):dist(player1.location + player1.size/2) < slap_range then
-    if player1.speed ~= 0 then 
-      player1.speed = (player1.speed * -1) * slap_hit
-    else 
-      player1.speed = player2.speed * slap_hit
+    if player1.speed.x < 0 then
+      player1.speed.x = -slap_hit
+    else
+      player1.speed.x = slap_hit
     end
   end
 end
