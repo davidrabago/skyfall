@@ -132,7 +132,7 @@ function fruitSpawnApple()
     location = vector(),
     size = vector(24, 24),
     
-    speed = 160,
+    speed = fruitSpeed(),
     
     img = fruit_frames[1],
     
@@ -150,7 +150,7 @@ function fruitSpawnBanana()
     location = vector(),
     size = vector(24, 24),
     
-    speed = 160,
+    speed = fruitSpeed(),
     
     img = fruit_frames[2],
     
@@ -163,6 +163,19 @@ function fruitSpawnBanana()
   table.insert(fruits, fruit)
 end
 
+function fruitSpeed()
+  randSpeed = math.random(1, 4)
+  if(randSpeed==1) then
+    speed = 150
+  elseif(randSpeed==2) then
+    speed = 220
+  elseif(randSpeed==3) then
+    speed = 330
+  else 
+    speed = 400
+  end
+  return speed
+end
 ------------------------------------- Timers ------------------------------------------------------------
 function handleTimers(delta)
   tenSecondTimer = tenSecondTimer -  delta
