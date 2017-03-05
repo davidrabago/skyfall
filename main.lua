@@ -89,7 +89,7 @@ function love.draw()
     love.graphics.draw(fruit_spritesheet, v.img, v.location.x, v.location.y)
   end
   
-  love.graphics.print("Time: " .. math.ceil(tenSecondTimer))
+  love.graphics.print("Time: " .. math.ceil(tenSecondTimer), love.graphics.getWidth()/2)
   
   love.graphics.printf(player1.score .. "", player1.location.x, player1.location.y - 20, player1.size.x, 'center')
   love.graphics.printf(player2.score .. "", player2.location.x, player2.location.y - 20, player1.size.x, 'center')
