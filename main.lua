@@ -182,6 +182,9 @@ function handlePlayerMovement(delta)
     if player1.speed.x > player1.max_speed then
       player1.speed.x = player1.max_speed
     end
+  elseif love.keyboard.isDown("s") then
+    slap1()
+    end
   else
     if player1.speed.x > 0 then player1.speed.x = player1.speed.x - (player1.accel * delta) end
     if player1.speed.x < 0 then player1.speed.x = player1.speed.x + (player1.accel * delta) end
@@ -219,6 +222,9 @@ function handlePlayerMovement(delta)
     if player2.speed.x > player2.max_speed then
       player2.speed.x = player2.max_speed
     end
+  elseif love.keyboard.isDown("down") then
+    slap2()
+    end
   else
     if player2.speed.x > 0 then player2.speed.x = player2.speed.x - (player2.accel * delta) end
     if player2.speed.x < 0 then player2.speed.x = player2.speed.x + (player2.accel * delta) end
@@ -244,6 +250,19 @@ function handlePlayerCollision(delta)
   end
 end
 
+------------------------------------- Player Slapping ------------------------------------------------------------
+function slap1(delta)
+  if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
+    if(player2.speed ~= 0) player2.speed = (player2.speed * -1) * 10
+    else player2.speed = player1.speed * 10
+  end
+end
+function slap2(delta)
+  if CheckCollisionVec(player1.location, player1.size, player2.location, player2.size) then
+    if(player1.speed ~= 0) player1.speed = (player1.speed * -1) * 10
+    else player1.speed = player2.speed * 10
+  end
+end
 ------------------------------------- Fruits ------------------------------------------------------------
 function handleFruits(delta)
     for i, v in ipairs(fruits) do
